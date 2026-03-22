@@ -58,7 +58,7 @@ curl -fsSL https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh
 
 如果你本地已经有这个仓库，直接在仓库根目录运行 **`./install.sh`**。
 
-安装器只会把内容写入 `~/.claude/skills/gstack` 和 `~/.agent/skills/gstack`，不会在系统技能目录里留下一个克隆出来的仓库。
+安装器只会把内容写入 `~/.claude/skills/gstack-cn` 和 `~/.agents/skills/gstack-cn`，不会在系统技能目录里留下一个克隆出来的仓库。
 
 如果你是在源代码仓库里开发 gstack，请使用这个 checkout 里的本地 `./setup` 工作流。它和上面的系统级安装路径是分开的。
 

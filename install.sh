@@ -105,12 +105,12 @@ else
   SOURCE_ROOT="$(extract_bundle_root "$BUNDLE_PATH" "$TMP_DIR/extracted")"
 fi
 
-copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack"
+copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack-cn"
 inject_chinese_directive "$HOME/.claude/CLAUDE.md"
 echo "gstack ready (claude)."
-echo "  skills: $HOME/.claude/skills/gstack"
+echo "  skills: $HOME/.claude/skills/gstack-cn"
 
-copy_skill_tree "$SOURCE_ROOT" "$HOME/.agent/skills/gstack"
-inject_chinese_directive "$HOME/.agent/AGENTS.md"
-echo "gstack ready (agent)."
-echo "  skills: $HOME/.agent/skills/gstack"
+copy_skill_tree "$SOURCE_ROOT" "$HOME/.agents/skills/gstack-cn"
+inject_chinese_directive "$HOME/.agents/AGENTS.md"
+echo "gstack ready (agents)."
+echo "  skills: $HOME/.agents/skills/gstack-cn"

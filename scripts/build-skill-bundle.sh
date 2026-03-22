@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUTPUT_DIR="$ROOT_DIR/dist"
 OUTPUT_PATH="$OUTPUT_DIR/gstack-skill-bundle.tar.gz"
 STAGE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/gstack-bundle.XXXXXX")"
-STAGE_ROOT="$STAGE_DIR/gstack"
+STAGE_ROOT="$STAGE_DIR/gstack-cn"
 
 cleanup() {
   rm -rf "$STAGE_DIR"
@@ -33,5 +33,5 @@ done
 
 find "$STAGE_ROOT" -type d -name node_modules -prune -exec rm -rf {} +
 
-tar -czf "$OUTPUT_PATH" -C "$STAGE_DIR" gstack
+tar -czf "$OUTPUT_PATH" -C "$STAGE_DIR" gstack-cn
 echo "wrote $OUTPUT_PATH"

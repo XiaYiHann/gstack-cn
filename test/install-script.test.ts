@@ -26,7 +26,7 @@ function copyInstallScript(targetDir: string): void {
 
 function createSkillBundle(sourceDir: string): string {
   const parentDir = makeTempDir('gstack-install-bundle-src-');
-  const bundleRootName = 'gstack';
+  const bundleRootName = 'gstack-cn';
   const bundleSourceDir = path.join(parentDir, bundleRootName);
   fs.cpSync(sourceDir, bundleSourceDir, { recursive: true });
 
@@ -62,10 +62,10 @@ describe('install.sh', () => {
     expect(content).not.toContain('git clone --depth 1');
     expect(content).not.toContain('bun install');
     expect(content).not.toContain('bun run build');
-    expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack"');
-    expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.agent/skills/gstack"');
+    expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack-cn"');
+    expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.agents/skills/gstack-cn"');
     expect(content).toContain('inject_chinese_directive "$HOME/.claude/CLAUDE.md"');
-    expect(content).toContain('inject_chinese_directive "$HOME/.agent/AGENTS.md"');
+    expect(content).toContain('inject_chinese_directive "$HOME/.agents/AGENTS.md"');
   });
 
   test('repository ships a prebuilt skill bundle', () => {
@@ -79,13 +79,13 @@ describe('install.sh', () => {
 
     expect(entries.exitCode).toBe(0);
     const archiveListing = entries.stdout.toString();
-    expect(archiveListing).toContain('gstack/');
-    expect(archiveListing).toContain('gstack/SKILL.md');
-    expect(archiveListing).toContain('gstack/browse/dist/browse');
-    expect(archiveListing).not.toContain('gstack/package.json');
-    expect(archiveListing).not.toContain('gstack/install.sh');
-    expect(archiveListing).not.toContain('gstack/scripts/');
-    expect(archiveListing).not.toContain('gstack/test/');
+    expect(archiveListing).toContain('gstack-cn/');
+    expect(archiveListing).toContain('gstack-cn/SKILL.md');
+    expect(archiveListing).toContain('gstack-cn/browse/dist/browse');
+    expect(archiveListing).not.toContain('gstack-cn/package.json');
+    expect(archiveListing).not.toContain('gstack-cn/install.sh');
+    expect(archiveListing).not.toContain('gstack-cn/scripts/');
+    expect(archiveListing).not.toContain('gstack-cn/test/');
   });
 
   test('README documents the install.sh entry points', () => {
@@ -95,7 +95,7 @@ describe('install.sh', () => {
     expect(content).toContain('./install.sh');
   });
 
-  test('default install keeps only skill files in ~/.claude/skills/gstack and ~/.agent/skills/gstack', () => {
+  test('default install keeps only skill files in ~/.claude/skills/gstack-cn and ~/.agents/skills/gstack-cn', () => {
     const sourceDir = makeTempDir('gstack-install-local-src-');
     const homeDir = makeTempDir('gstack-install-local-home-');
 
@@ -123,8 +123,8 @@ describe('install.sh', () => {
     expect(result.exitCode).toBe(0);
 
     for (const targetRoot of [
-      path.join(homeDir, '.claude', 'skills', 'gstack'),
-      path.join(homeDir, '.agent', 'skills', 'gstack'),
+      path.join(homeDir, '.claude', 'skills', 'gstack-cn'),
+      path.join(homeDir, '.agents', 'skills', 'gstack-cn'),
     ]) {
       expect(fs.existsSync(path.join(targetRoot, 'SKILL.md'))).toBe(true);
       expect(fs.existsSync(path.join(targetRoot, 'ETHOS.md'))).toBe(true);
@@ -146,7 +146,7 @@ describe('install.sh', () => {
     const globalClaude = fs.readFileSync(path.join(homeDir, '.claude', 'CLAUDE.md'), 'utf-8');
     expect(globalClaude).toContain('gstack-cn: Chinese output');
     expect(globalClaude).toContain('always respond in Chinese');
-    const globalAgent = fs.readFileSync(path.join(homeDir, '.agent', 'AGENTS.md'), 'utf-8');
+    const globalAgent = fs.readFileSync(path.join(homeDir, '.agents', 'AGENTS.md'), 'utf-8');
     expect(globalAgent).toContain('gstack-cn: Chinese output');
     expect(globalAgent).toContain('always respond in Chinese');
   });
@@ -182,8 +182,8 @@ describe('install.sh', () => {
     expect(result.exitCode).toBe(0);
 
     for (const targetRoot of [
-      path.join(homeDir, '.claude', 'skills', 'gstack'),
-      path.join(homeDir, '.agent', 'skills', 'gstack'),
+      path.join(homeDir, '.claude', 'skills', 'gstack-cn'),
+      path.join(homeDir, '.agents', 'skills', 'gstack-cn'),
     ]) {
       expect(fs.existsSync(path.join(targetRoot, 'SKILL.md'))).toBe(true);
       expect(fs.existsSync(path.join(targetRoot, 'ETHOS.md'))).toBe(true);
@@ -205,7 +205,7 @@ describe('install.sh', () => {
     const globalClaude = fs.readFileSync(path.join(homeDir, '.claude', 'CLAUDE.md'), 'utf-8');
     expect(globalClaude).toContain('gstack-cn: Chinese output');
     expect(globalClaude).toContain('always respond in Chinese');
-    const globalAgent = fs.readFileSync(path.join(homeDir, '.agent', 'AGENTS.md'), 'utf-8');
+    const globalAgent = fs.readFileSync(path.join(homeDir, '.agents', 'AGENTS.md'), 'utf-8');
     expect(globalAgent).toContain('gstack-cn: Chinese output');
     expect(globalAgent).toContain('always respond in Chinese');
   });
@@ -240,8 +240,8 @@ describe('install.sh', () => {
 
     expect(firstInstall.exitCode).toBe(0);
 
-    const claudeRoot = path.join(homeDir, '.claude', 'skills', 'gstack');
-    const agentRoot = path.join(homeDir, '.agent', 'skills', 'gstack');
+    const claudeRoot = path.join(homeDir, '.claude', 'skills', 'gstack-cn');
+    const agentRoot = path.join(homeDir, '.agents', 'skills', 'gstack-cn');
     fs.writeFileSync(path.join(claudeRoot, 'stale.txt'), 'old\n', 'utf-8');
     fs.writeFileSync(path.join(agentRoot, 'stale.txt'), 'old\n', 'utf-8');
 
@@ -262,7 +262,7 @@ describe('install.sh', () => {
     expect(fs.existsSync(path.join(agentRoot, 'stale.txt'))).toBe(false);
 
     const globalClaude = fs.readFileSync(path.join(homeDir, '.claude', 'CLAUDE.md'), 'utf-8');
-    const globalAgent = fs.readFileSync(path.join(homeDir, '.agent', 'AGENTS.md'), 'utf-8');
+    const globalAgent = fs.readFileSync(path.join(homeDir, '.agents', 'AGENTS.md'), 'utf-8');
     expect(globalClaude.match(/gstack-cn: Chinese output/g)?.length).toBe(1);
     expect(globalAgent.match(/gstack-cn: Chinese output/g)?.length).toBe(1);
   });
