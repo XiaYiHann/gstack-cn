@@ -48,7 +48,11 @@ Fork 它，改进它，把它变成你自己的。别只会挑刺，先欣赏再
 
 打开 Claude Code，粘贴下面这段。剩下的 Claude 会处理。
 
-> 安装 gstack：运行 **`curl -fsSL https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh | bash`**
+> 安装 gstack：运行下面这条命令
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh | bash
+```
 
 再次运行同一个命令，就会更新现有安装。
 
