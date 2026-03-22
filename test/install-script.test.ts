@@ -182,4 +182,73 @@ describe('install.sh', () => {
     expect(globalAgent).toContain('gstack-cn: Chinese output');
     expect(globalAgent).toContain('always respond in Chinese');
   });
+
+  test('re-running install updates existing roots and keeps Chinese directives unique', () => {
+    const repoDir = makeTempDir('gstack-install-update-repo-');
+    const workDir = makeTempDir('gstack-install-update-work-');
+    const homeDir = makeTempDir('gstack-install-update-home-');
+
+    writeFile(path.join(repoDir, 'install.sh'), '#!/usr/bin/env bash\n');
+    writeFile(path.join(repoDir, 'package.json'), '{"name":"gstack","private":true}');
+    writeFile(path.join(repoDir, 'README.md'), '# gstack\n');
+    writeFile(path.join(repoDir, 'SKILL.md'), '---\nname: gstack\ndescription: test\n---\n');
+    writeFile(path.join(repoDir, 'ETHOS.md'), '# ethos\n');
+    writeFile(path.join(repoDir, 'VERSION'), '1.0.0\n');
+    writeFile(path.join(repoDir, 'CLAUDE.md'), '# gstack\n');
+    writeFile(path.join(repoDir, 'AGENTS.md'), '# gstack\n');
+    writeFile(path.join(repoDir, 'bin', 'tool'), 'v1\n', 0o755);
+    writeFile(path.join(repoDir, 'browse', 'SKILL.md'), '---\nname: browse\ndescription: test\n---\n');
+    writeFile(path.join(repoDir, 'browse', 'dist', 'browse'), 'v1-browse\n', 0o755);
+    writeFile(path.join(repoDir, '.agents', 'skills', 'gstack-cn', 'SKILL.md'), '---\nname: gstack-cn\ndescription: test\n---\n');
+    writeFile(path.join(repoDir, 'review', 'SKILL.md'), '---\nname: review\ndescription: test\n---\n');
+    writeFile(path.join(repoDir, 'scripts', 'ignored.ts'), 'export {}\n');
+    writeFile(path.join(repoDir, 'test', 'ignored.test.ts'), 'test("x", () => expect(true).toBe(true));\n');
+    writeFile(path.join(repoDir, '.git', 'config'), '[core]\nrepositoryformatversion = 0\n');
+
+    Bun.spawnSync(['git', 'init', '-b', 'main'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
+    Bun.spawnSync(['git', 'config', 'user.email', 'test@example.com'], { cwd: repoDir });
+    Bun.spawnSync(['git', 'config', 'user.name', 'Test User'], { cwd: repoDir });
+    Bun.spawnSync(['git', 'add', '.'], { cwd: repoDir });
+    let commit = Bun.spawnSync(['git', 'commit', '-m', 'init'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
+    expect(commit.exitCode).toBe(0);
+
+    copyInstallScript(workDir);
+
+    const firstInstall = runInstall(workDir, [], {
+      HOME: homeDir,
+      GSTACK_REPO_URL: `file://${repoDir}`,
+      GSTACK_INSTALL_REF: 'main',
+    });
+
+    expect(firstInstall.exitCode).toBe(0);
+
+    const claudeRoot = path.join(homeDir, '.claude', 'skills', 'gstack');
+    const agentRoot = path.join(homeDir, '.agent', 'skills', 'gstack');
+    fs.writeFileSync(path.join(claudeRoot, 'stale.txt'), 'old\n', 'utf-8');
+    fs.writeFileSync(path.join(agentRoot, 'stale.txt'), 'old\n', 'utf-8');
+
+    writeFile(path.join(repoDir, 'bin', 'tool'), 'v2\n', 0o755);
+    writeFile(path.join(repoDir, 'browse', 'dist', 'browse'), 'v2-browse\n', 0o755);
+    Bun.spawnSync(['git', 'add', 'bin/tool', 'browse/dist/browse'], { cwd: repoDir });
+    commit = Bun.spawnSync(['git', 'commit', '-m', 'update assets'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
+    expect(commit.exitCode).toBe(0);
+
+    const secondInstall = runInstall(workDir, [], {
+      HOME: homeDir,
+      GSTACK_REPO_URL: `file://${repoDir}`,
+      GSTACK_INSTALL_REF: 'main',
+    });
+
+    expect(secondInstall.exitCode).toBe(0);
+
+    expect(fs.readFileSync(path.join(claudeRoot, 'bin', 'tool'), 'utf-8')).toContain('v2');
+    expect(fs.readFileSync(path.join(agentRoot, 'bin', 'tool'), 'utf-8')).toContain('v2');
+    expect(fs.existsSync(path.join(claudeRoot, 'stale.txt'))).toBe(false);
+    expect(fs.existsSync(path.join(agentRoot, 'stale.txt'))).toBe(false);
+
+    const globalClaude = fs.readFileSync(path.join(homeDir, '.claude', 'CLAUDE.md'), 'utf-8');
+    const globalAgent = fs.readFileSync(path.join(homeDir, '.agent', 'AGENTS.md'), 'utf-8');
+    expect(globalClaude.match(/gstack-cn: Chinese output/g)?.length).toBe(1);
+    expect(globalAgent.match(/gstack-cn: Chinese output/g)?.length).toBe(1);
+  });
 });

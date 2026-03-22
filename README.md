@@ -50,6 +50,8 @@ Run this one command. It installs only the skill bundle into `~/.claude/skills/g
 
 > Install gstack: run **`curl -fsSL https://raw.githubusercontent.com/garrytan/gstack/main/install.sh | bash`**
 
+Run the same command again whenever you want to update an existing install.
+
 If you already have the repo locally, run **`./install.sh`** from the repo root.
 
 The installer writes to `~/.claude/skills/gstack` and `~/.agent/skills/gstack` only. It does not leave a cloned checkout behind in either system skill root.
