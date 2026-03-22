@@ -54,7 +54,7 @@ Fork 它，改进它，把它变成你自己的。别只会挑刺，先欣赏再
 curl -fsSL https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh | bash
 ```
 
-再次运行同一个命令，就会更新现有安装。
+再次运行同一个命令，就会更新现有安装。安装器只下载预打包好的 skill bundle，不会 clone 整个仓库，也不会在本机构建。
 
 如果你本地已经有这个仓库，直接在仓库根目录运行 **`./install.sh`**。
 

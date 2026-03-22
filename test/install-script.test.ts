@@ -5,6 +5,7 @@ import * as path from 'path';
 
 const ROOT = path.resolve(import.meta.dir, '..');
 const INSTALL_SCRIPT = path.join(ROOT, 'install.sh');
+const SKILL_BUNDLE = path.join(ROOT, 'dist', 'gstack-skill-bundle.tar.gz');
 
 function makeTempDir(prefix: string): string {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -21,6 +22,22 @@ function writeFile(filePath: string, content: string, mode?: number): void {
 function copyInstallScript(targetDir: string): void {
   fs.copyFileSync(INSTALL_SCRIPT, path.join(targetDir, 'install.sh'));
   fs.chmodSync(path.join(targetDir, 'install.sh'), 0o755);
+}
+
+function createSkillBundle(sourceDir: string): string {
+  const parentDir = makeTempDir('gstack-install-bundle-src-');
+  const bundleRootName = 'gstack';
+  const bundleSourceDir = path.join(parentDir, bundleRootName);
+  fs.cpSync(sourceDir, bundleSourceDir, { recursive: true });
+
+  const bundlePath = path.join(makeTempDir('gstack-install-bundle-out-'), `${bundleRootName}.tar.gz`);
+  const result = Bun.spawnSync(['tar', '-czf', bundlePath, '-C', parentDir, bundleRootName], {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+
+  expect(result.exitCode).toBe(0);
+  return bundlePath;
 }
 
 function runInstall(cwd: string, args: string[], env: Record<string, string> = {}) {
@@ -40,11 +57,35 @@ describe('install.sh', () => {
 
     const content = fs.readFileSync(INSTALL_SCRIPT, 'utf-8');
     expect(content).toContain('copy_skill_tree');
-    expect(content).toContain('github.com/XiaYiHann/gstack-cn.git');
+    expect(content).toContain('dist/gstack-skill-bundle.tar.gz');
+    expect(content).not.toContain('archive/refs/heads');
+    expect(content).not.toContain('git clone --depth 1');
+    expect(content).not.toContain('bun install');
+    expect(content).not.toContain('bun run build');
     expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack"');
     expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.agent/skills/gstack"');
     expect(content).toContain('inject_chinese_directive "$HOME/.claude/CLAUDE.md"');
     expect(content).toContain('inject_chinese_directive "$HOME/.agent/AGENTS.md"');
+  });
+
+  test('repository ships a prebuilt skill bundle', () => {
+    expect(fs.existsSync(SKILL_BUNDLE)).toBe(true);
+    expect(fs.statSync(SKILL_BUNDLE).size).toBeGreaterThan(0);
+
+    const entries = Bun.spawnSync(['tar', '-tzf', SKILL_BUNDLE], {
+      stdout: 'pipe',
+      stderr: 'pipe',
+    });
+
+    expect(entries.exitCode).toBe(0);
+    const archiveListing = entries.stdout.toString();
+    expect(archiveListing).toContain('gstack/');
+    expect(archiveListing).toContain('gstack/SKILL.md');
+    expect(archiveListing).toContain('gstack/browse/dist/browse');
+    expect(archiveListing).not.toContain('gstack/package.json');
+    expect(archiveListing).not.toContain('gstack/install.sh');
+    expect(archiveListing).not.toContain('gstack/scripts/');
+    expect(archiveListing).not.toContain('gstack/test/');
   });
 
   test('README documents the install.sh entry points', () => {
@@ -70,10 +111,6 @@ describe('install.sh', () => {
     writeFile(path.join(sourceDir, 'browse', 'SKILL.md'), '---\nname: browse\ndescription: test\n---\n');
     writeFile(path.join(sourceDir, 'browse', 'dist', 'browse'), '#!/usr/bin/env bash\necho browse\n', 0o755);
     writeFile(path.join(sourceDir, 'review', 'SKILL.md'), '---\nname: review\ndescription: test\n---\n');
-    writeFile(
-      path.join(sourceDir, '.agents', 'skills', 'gstack-cn', 'SKILL.md'),
-      '---\nname: gstack-cn\ndescription: test\n---\n'
-    );
     writeFile(path.join(sourceDir, 'scripts', 'ignored.ts'), 'export {}\n');
     writeFile(path.join(sourceDir, 'test', 'ignored.test.ts'), 'test("x", () => expect(true).toBe(true));\n');
     writeFile(path.join(sourceDir, '.git', 'config'), '[core]\nrepositoryformatversion = 0\n');
@@ -114,7 +151,7 @@ describe('install.sh', () => {
     expect(globalAgent).toContain('always respond in Chinese');
   });
 
-  test('remote bootstrap also keeps only skill files in both roots', () => {
+  test('remote bootstrap downloads archive and keeps only skill files in both roots', () => {
     const repoDir = makeTempDir('gstack-install-remote-repo-');
     const workDir = makeTempDir('gstack-install-remote-work-');
     const homeDir = makeTempDir('gstack-install-remote-home-');
@@ -131,27 +168,15 @@ describe('install.sh', () => {
     writeFile(path.join(repoDir, 'browse', 'SKILL.md'), '---\nname: browse\ndescription: test\n---\n');
     writeFile(path.join(repoDir, 'browse', 'dist', 'browse'), '#!/usr/bin/env bash\necho browse\n', 0o755);
     writeFile(path.join(repoDir, 'review', 'SKILL.md'), '---\nname: review\ndescription: test\n---\n');
-    writeFile(
-      path.join(repoDir, '.agents', 'skills', 'gstack-cn', 'SKILL.md'),
-      '---\nname: gstack-cn\ndescription: test\n---\n'
-    );
     writeFile(path.join(repoDir, 'scripts', 'ignored.ts'), 'export {}\n');
     writeFile(path.join(repoDir, 'test', 'ignored.test.ts'), 'test("x", () => expect(true).toBe(true));\n');
-    writeFile(path.join(repoDir, '.git', 'config'), '[core]\nrepositoryformatversion = 0\n');
-
-    Bun.spawnSync(['git', 'init', '-b', 'main'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
-    Bun.spawnSync(['git', 'config', 'user.email', 'test@example.com'], { cwd: repoDir });
-    Bun.spawnSync(['git', 'config', 'user.name', 'Test User'], { cwd: repoDir });
-    Bun.spawnSync(['git', 'add', '.'], { cwd: repoDir });
-    const commit = Bun.spawnSync(['git', 'commit', '-m', 'init'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
-    expect(commit.exitCode).toBe(0);
+    const archivePath = createSkillBundle(repoDir);
 
     copyInstallScript(workDir);
 
     const result = runInstall(workDir, [], {
       HOME: homeDir,
-      GSTACK_REPO_URL: `file://${repoDir}`,
-      GSTACK_INSTALL_REF: 'main',
+      GSTACK_BUNDLE_URL: `file://${archivePath}`,
     });
 
     expect(result.exitCode).toBe(0);
@@ -201,25 +226,16 @@ describe('install.sh', () => {
     writeFile(path.join(repoDir, 'bin', 'tool'), 'v1\n', 0o755);
     writeFile(path.join(repoDir, 'browse', 'SKILL.md'), '---\nname: browse\ndescription: test\n---\n');
     writeFile(path.join(repoDir, 'browse', 'dist', 'browse'), 'v1-browse\n', 0o755);
-    writeFile(path.join(repoDir, '.agents', 'skills', 'gstack-cn', 'SKILL.md'), '---\nname: gstack-cn\ndescription: test\n---\n');
     writeFile(path.join(repoDir, 'review', 'SKILL.md'), '---\nname: review\ndescription: test\n---\n');
     writeFile(path.join(repoDir, 'scripts', 'ignored.ts'), 'export {}\n');
     writeFile(path.join(repoDir, 'test', 'ignored.test.ts'), 'test("x", () => expect(true).toBe(true));\n');
-    writeFile(path.join(repoDir, '.git', 'config'), '[core]\nrepositoryformatversion = 0\n');
-
-    Bun.spawnSync(['git', 'init', '-b', 'main'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
-    Bun.spawnSync(['git', 'config', 'user.email', 'test@example.com'], { cwd: repoDir });
-    Bun.spawnSync(['git', 'config', 'user.name', 'Test User'], { cwd: repoDir });
-    Bun.spawnSync(['git', 'add', '.'], { cwd: repoDir });
-    let commit = Bun.spawnSync(['git', 'commit', '-m', 'init'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
-    expect(commit.exitCode).toBe(0);
+    let archivePath = createSkillBundle(repoDir);
 
     copyInstallScript(workDir);
 
     const firstInstall = runInstall(workDir, [], {
       HOME: homeDir,
-      GSTACK_REPO_URL: `file://${repoDir}`,
-      GSTACK_INSTALL_REF: 'main',
+      GSTACK_BUNDLE_URL: `file://${archivePath}`,
     });
 
     expect(firstInstall.exitCode).toBe(0);
@@ -231,14 +247,11 @@ describe('install.sh', () => {
 
     writeFile(path.join(repoDir, 'bin', 'tool'), 'v2\n', 0o755);
     writeFile(path.join(repoDir, 'browse', 'dist', 'browse'), 'v2-browse\n', 0o755);
-    Bun.spawnSync(['git', 'add', 'bin/tool', 'browse/dist/browse'], { cwd: repoDir });
-    commit = Bun.spawnSync(['git', 'commit', '-m', 'update assets'], { cwd: repoDir, stdout: 'pipe', stderr: 'pipe' });
-    expect(commit.exitCode).toBe(0);
+    archivePath = createSkillBundle(repoDir);
 
     const secondInstall = runInstall(workDir, [], {
       HOME: homeDir,
-      GSTACK_REPO_URL: `file://${repoDir}`,
-      GSTACK_INSTALL_REF: 'main',
+      GSTACK_BUNDLE_URL: `file://${archivePath}`,
     });
 
     expect(secondInstall.exitCode).toBe(0);

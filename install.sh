@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GSTACK_REPO_URL="${GSTACK_REPO_URL:-https://github.com/XiaYiHann/gstack-cn.git}"
-GSTACK_INSTALL_REF="${GSTACK_INSTALL_REF:-main}"
+GSTACK_BUNDLE_URL="${GSTACK_BUNDLE_URL:-https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/dist/gstack-skill-bundle.tar.gz}"
 
 find_local_repo_root() {
   local dir="$PWD"
@@ -67,6 +66,33 @@ DIRECTIVE
   fi
 }
 
+download_bundle() {
+  local bundle_url="$1"
+  local bundle_path="$2"
+
+  curl -fsSL "$bundle_url" -o "$bundle_path"
+}
+
+extract_bundle_root() {
+  local bundle_path="$1"
+  local extract_dir="$2"
+  local first_entry
+  local root_name
+
+  mkdir -p "$extract_dir"
+  tar -xzf "$bundle_path" -C "$extract_dir"
+
+  first_entry="$(tar -tzf "$bundle_path" | head -n 1)"
+  root_name="${first_entry%%/*}"
+
+  if [ -z "$root_name" ] || [ ! -d "$extract_dir/$root_name" ]; then
+    echo "failed to locate bundle root from $bundle_path" >&2
+    return 1
+  fi
+
+  printf '%s\n' "$extract_dir/$root_name"
+}
+
 SOURCE_ROOT=""
 TMP_DIR=""
 if local_root="$(find_local_repo_root 2>/dev/null)"; then
@@ -74,18 +100,9 @@ if local_root="$(find_local_repo_root 2>/dev/null)"; then
 else
   TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/gstack-cn-install.XXXXXX")"
   trap 'rm -rf "$TMP_DIR"' EXIT INT TERM
-  git clone --depth 1 --branch "$GSTACK_INSTALL_REF" "$GSTACK_REPO_URL" "$TMP_DIR/gstack-cn"
-  SOURCE_ROOT="$TMP_DIR/gstack-cn"
-fi
-
-if [ ! -x "$SOURCE_ROOT/browse/dist/browse" ] || [ ! -f "$SOURCE_ROOT/.agents/skills/gstack-cn/SKILL.md" ]; then
-  if command -v bun >/dev/null 2>&1 && [ -f "$SOURCE_ROOT/package.json" ]; then
-    (
-      cd "$SOURCE_ROOT"
-      bun install
-      bun run build
-    )
-  fi
+  BUNDLE_PATH="$TMP_DIR/gstack-skill-bundle.tar.gz"
+  download_bundle "$GSTACK_BUNDLE_URL" "$BUNDLE_PATH"
+  SOURCE_ROOT="$(extract_bundle_root "$BUNDLE_PATH" "$TMP_DIR/extracted")"
 fi
 
 copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack"
