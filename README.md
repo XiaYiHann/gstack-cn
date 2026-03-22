@@ -1,247 +1,254 @@
 # gstack
 
-Hi, I'm [Garry Tan](https://x.com/garrytan). I'm President & CEO of [Y Combinator](https://www.ycombinator.com/), where I've worked with thousands of startups including Coinbase, Instacart, and Rippling when the founders were just one or two people in a garage — companies now worth tens of billions of dollars. Before YC, I designed the Palantir logo and was one of the first eng manager/PM/designers there. I cofounded Posterous, a blog platform we sold to Twitter. I built Bookface, YC's internal social network, back in 2013. I've been building products as a designer, PM, and eng manager for a long time.
+我是 [Garry Tan](https://x.com/garrytan)，Y Combinator 的 President & CEO。过去我和成千上万家创业公司合作过，比如 Coinbase、Instacart、Rippling，很多时候他们还只是车库里的一两个人，后来都成长为市值数百亿美元的公司。加入 YC 之前，我设计过 Palantir 的 logo，也是那里最早一批工程经理、PM 和设计师之一。我还联合创办过 Posterous，后来把它卖给了 Twitter。我在 2013 年搭建了 YC 的内部社交网络 Bookface。长期以来，我一直同时以设计师、PM 和工程经理的身份做产品。
 
-And right now I am in the middle of something that feels like a new era entirely.
+而现在，我正处在一个像是新纪元的阶段。
 
-In the last 60 days I have written **over 600,000 lines of production code** — 35% tests — and I am doing **10,000 to 20,000 usable lines of code per day** as a part-time part of my day while doing all my duties as CEO of YC. That is not a typo. My last `/retro` (developer stats from the last 7 days) across 3 projects: **140,751 lines added, 362 commits, ~115k net LOC**. The models are getting dramatically better every week. We are at the dawn of something real — one person shipping at a scale that used to require a team of twenty.
+过去 60 天里，我写了 **超过 60 万行生产代码**，其中 35% 是测试。我还在做 CEO 其他工作的同时，利用每天一部分时间，持续产出 **每天 1 万到 2 万行可用代码**。这不是夸张。最近一次 `/retro`（过去 7 天的开发统计）覆盖 3 个项目，结果是：**新增 140,751 行、362 次提交、净增约 115k LOC**。模型每周都在显著进步。我们真的已经站在一个新阶段的门口，一个人完成过去需要二十个人才能完成的产出。
 
-**2026 — 1,237 contributions and counting:**
+**2026 年，贡献数已经达到 1,237 并且还在增长：**
 
 ![GitHub contributions 2026 — 1,237 contributions, massive acceleration in Jan-Mar](docs/images/github-2026.png)
 
-**2013 — when I built Bookface at YC (772 contributions):**
+**2013 年，当我在 YC 搭建 Bookface 时的贡献数是 772：**
 
 ![GitHub contributions 2013 — 772 contributions building Bookface at YC](docs/images/github-2013.png)
 
-Same person. Different era. The difference is the tooling.
+还是同一个人，只是时代变了。差别在于工具。
 
-**gstack is how I do it.** It is my open source software factory. It turns Claude Code into a virtual engineering team you actually manage — a CEO who rethinks the product, an eng manager who locks the architecture, a designer who catches AI slop, a paranoid reviewer who finds production bugs, a QA lead who opens a real browser and clicks through your app, and a release engineer who ships the PR. Eighteen specialists and seven power tools, all as slash commands, all Markdown, **all free, MIT license, available right now.**
+**gstack 就是我这样做事的方式。** 它是我的开源软件工厂，把 Claude Code 变成一个你真正可以管理的虚拟工程团队：重新思考产品的 CEO、锁定架构的工程经理、识别 AI slop 的设计师、找生产问题的审查者、打开真实浏览器点进你应用里验证流程的 QA 负责人，以及负责发版的 release engineer。18 个专业角色和 7 个强力工具，全都是 slash command，全都是 Markdown，**全部免费，MIT 许可，现在就能用。**
 
-I am learning how to get to the edge of what agentic systems can do as of March 2026, and this is my live experiment. I am sharing it because I want the whole world on this journey with me.
+我正在研究 agentic 系统在 2026 年 3 月左右到底能做到什么程度，这是一个实时实验。我把它开源，是因为我想带着所有人一起经历这个阶段。
 
-Fork it. Improve it. Make it yours. Don't player hate, appreciate.
+Fork 它，改进它，把它变成你自己的。别只会挑刺，先欣赏再改造。
 
-**Who this is for:**
-- **Founders and CEOs** — especially technical ones who still want to ship. This is how you build like a team of twenty.
-- **First-time Claude Code users** — gstack is the best way to start. Structured roles instead of a blank prompt.
-- **Tech leads and staff engineers** — bring rigorous review, QA, and release automation to every PR
+**适合谁：**
+- **创始人和 CEO**：尤其是还想自己继续写代码的技术型创始人。这就是你如何像一支 20 人团队一样工作。
+- **第一次使用 Claude Code 的人**：gstack 是最好的起点。它提供结构化角色，而不是一个空白提示词。
+- **技术负责人和 Staff Engineer**：把严格的评审、QA 和发布自动化带到每一个 PR。
 
-## Quick start: your first 10 minutes
+## 快速开始：你的前 10 分钟
 
-1. Install gstack (30 seconds — see below)
-2. Run `/office-hours` — describe what you're building. It will reframe the problem before you write a line of code.
-3. Run `/plan-ceo-review` on any feature idea
-4. Run `/review` on any branch with changes
-5. Run `/qa` on your staging URL
-6. Stop there. You'll know if this is for you.
+1. 安装 gstack（30 秒，见下文）
+2. 运行 `/office-hours`，描述你正在做什么。它会在你写代码之前重新定义问题。
+3. 在任何功能想法上运行 `/plan-ceo-review`
+4. 对任何带变更的分支运行 `/review`
+5. 对你的 staging 地址运行 `/qa`
+6. 到这里先停一下。你会知道它是不是适合你。
 
-Expect first useful run in under 5 minutes on any repo with tests already set up.
+如果仓库已经有测试，通常 5 分钟内就能得到第一次有价值的结果。
 
-**If you only read one more section, read this one.**
+**如果你只愿意再读一个部分，就读安装这一节。**
 
-## Install — takes 30 seconds
+## 安装：只需 30 秒
 
-**Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Git](https://git-scm.com/), [Bun](https://bun.sh/) v1.0+, [Node.js](https://nodejs.org/) (Windows only)
+**前提：** [Claude Code](https://docs.anthropic.com/en/docs/claude-code)、[Git](https://git-scm.com/)、[Bun](https://bun.sh/) 1.0+、[Node.js](https://nodejs.org/)（仅 Windows 需要）
 
-### Step 1: Install on your machine
+### 第 1 步：安装到你的机器上
 
-Run this one command. It installs only the skill bundle into `~/.claude/skills/gstack` and `~/.agent/skills/gstack`, then writes the Chinese output directive into the matching global instruction files.
+打开 Claude Code，粘贴下面这段。剩下的 Claude 会处理。
 
-> Install gstack: run **`curl -fsSL https://raw.githubusercontent.com/garrytan/gstack/main/install.sh | bash`**
+> 安装 gstack：运行 **`curl -fsSL https://raw.githubusercontent.com/garrytan/gstack/main/install.sh | bash`**
 
-Run the same command again whenever you want to update an existing install.
+再次运行同一个命令，就会更新现有安装。
 
-If you already have the repo locally, run **`./install.sh`** from the repo root.
+如果你本地已经有这个仓库，直接在仓库根目录运行 **`./install.sh`**。
 
-The installer writes to `~/.claude/skills/gstack` and `~/.agent/skills/gstack` only. It does not leave a cloned checkout behind in either system skill root.
+安装器只会把内容写入 `~/.claude/skills/gstack` 和 `~/.agent/skills/gstack`，不会在系统技能目录里留下一个克隆出来的仓库。
 
-If you are developing gstack itself from the source tree, use the repo-local `./setup` workflow in this checkout. That is separate from the system install path above.
+如果你是在源代码仓库里开发 gstack，请使用这个 checkout 里的本地 `./setup` 工作流。它和上面的系统级安装路径是分开的。
 
-## See it work
+## 看它如何工作
 
 ```
-You:    I want to build a daily briefing app for my calendar.
-You:    /office-hours
-Claude: [asks about the pain — specific examples, not hypotheticals]
+你：  我想做一个日历日程简报应用。
+你：  /office-hours
+Claude: [先问痛点，不问假设]
 
-You:    Multiple Google calendars, events with stale info, wrong locations.
-        Prep takes forever and the results aren't good enough...
+你：  多个 Google 日历，事件信息会过期，地点经常错。
+      准备工作太耗时，而且结果也不够好……
 
-Claude: I'm going to push back on the framing. You said "daily briefing
-        app." But what you actually described is a personal chief of
-        staff AI.
-        [extracts 5 capabilities you didn't realize you were describing]
-        [challenges 4 premises — you agree, disagree, or adjust]
-        [generates 3 implementation approaches with effort estimates]
-        RECOMMENDATION: Ship the narrowest wedge tomorrow, learn from
-        real usage. The full vision is a 3-month project — start with
-        the daily briefing that actually works.
-        [writes design doc → feeds into downstream skills automatically]
+Claude: 我要先挑战你的表述。你说的是“日程简报应用”，但你真正
+        描述的是一个个人首席助理 AI。
+        [抽取出 5 个你没意识到自己在描述的能力]
+        [挑战 4 个前提，你可以同意、反对或调整]
+        [给出 3 种实现方案和预估成本]
+        建议：先明天就上线最小可行版本，从真实使用中学习。
+        完整愿景是一个 3 个月项目，先从真正能用的日程简报开始。
+        [写出设计文档，再喂给后续技能]
 
-You:    /plan-ceo-review
-        [reads the design doc, challenges scope, runs 10-section review]
+你：  /plan-ceo-review
+      [读取设计文档，挑战范围，做 10 段式评审]
 
-You:    /plan-eng-review
-        [ASCII diagrams for data flow, state machines, error paths]
-        [test matrix, failure modes, security concerns]
+你：  /plan-eng-review
+      [ASCII 数据流图、状态机、错误路径]
+      [测试矩阵、失败模式、安全问题]
 
-You:    Approve plan. Exit plan mode.
-        [writes 2,400 lines across 11 files. ~8 minutes.]
+你：  批准方案，退出计划模式。
+      [8 分钟内写出 2,400 行、11 个文件]
 
-You:    /review
-        [AUTO-FIXED] 2 issues. [ASK] Race condition → you approve fix.
+你：  /review
+      [AUTO-FIXED] 2 个问题。 [ASK] 一个竞态问题，你批准修复。
 
-You:    /qa https://staging.myapp.com
-        [opens real browser, clicks through flows, finds and fixes a bug]
+你：  /qa https://staging.myapp.com
+      [打开真实浏览器，点击流程，找出并修复一个 bug]
 
-You:    /ship
-        Tests: 42 → 51 (+9 new). PR: github.com/you/app/pull/42
+你：  /ship
+      测试：42 → 51（新增 9 个）。PR：github.com/you/app/pull/42
 ```
 
-You said "daily briefing app." The agent said "you're building a chief of staff AI" — because it listened to your pain, not your feature request. Then it challenged your premises, generated three approaches, recommended the narrowest wedge, and wrote a design doc that fed into every downstream skill. Eight commands. That is not a copilot. That is a team.
+你说的是“日程简报应用”。系统听到的是“你在做一个个人首席助理 AI”。
+它听的是你的痛点，而不是你的功能描述。它会挑战你的前提，给出三个方案，
+推荐最窄的切入点，并写出一个会继续喂给后续所有技能的设计文档。
+这不是一个 copilot。这是一支团队。
 
-## The sprint
+## 工作流
 
-gstack is a process, not a collection of tools. The skills are ordered the way a sprint runs:
+gstack 不是一组工具，而是一套流程。技能的排列顺序就是一个 sprint 的顺序：
 
-**Think → Plan → Build → Review → Test → Ship → Reflect**
+**思考 → 计划 → 构建 → 评审 → 测试 → 发布 → 复盘**
 
-Each skill feeds into the next. `/office-hours` writes a design doc that `/plan-ceo-review` reads. `/plan-eng-review` writes a test plan that `/qa` picks up. `/review` catches bugs that `/ship` verifies are fixed. Nothing falls through the cracks because every step knows what came before it.
+每个技能都会把上下文交给下一个技能。`/office-hours` 写出的设计文档会被
+`/plan-ceo-review` 读取。`/plan-eng-review` 写出的测试计划会被 `/qa`
+接上。`/review` 会找出 `/ship` 需要验证的问题。因为每一步都知道前一步发生了什么，
+所以不会有内容掉队。
 
-One sprint, one person, one feature — that takes about 30 minutes with gstack. But here's what changes everything: you can run 10-15 of these sprints in parallel. Different features, different branches, different agents — all at the same time. That is how I ship 10,000+ lines of production code per day while doing my actual job.
+一个人、一个功能、一个 sprint，通常大约 30 分钟就能跑完。
+但真正改变一切的是：你可以同时跑 10 到 15 个这样的 sprint。
+不同功能、不同分支、不同 agent，一起并行。这就是我为什么能在做自己
+本职工作的同时，每天产出 10,000 行以上生产代码。
 
-| Skill | Your specialist | What they do |
-|-------|----------------|--------------|
-| `/office-hours` | **YC Office Hours** | Start here. Six forcing questions that reframe your product before you write code. Pushes back on your framing, challenges premises, generates implementation alternatives. Design doc feeds into every downstream skill. |
-| `/plan-ceo-review` | **CEO / Founder** | Rethink the problem. Find the 10-star product hiding inside the request. Four modes: Expansion, Selective Expansion, Hold Scope, Reduction. |
-| `/plan-eng-review` | **Eng Manager** | Lock in architecture, data flow, diagrams, edge cases, and tests. Forces hidden assumptions into the open. |
-| `/plan-design-review` | **Senior Designer** | Rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. AI Slop detection. Interactive — one AskUserQuestion per design choice. |
-| `/design-consultation` | **Design Partner** | Build a complete design system from scratch. Knows the landscape, proposes creative risks, generates realistic product mockups. Design at the heart of all other phases. |
-| `/review` | **Staff Engineer** | Find the bugs that pass CI but blow up in production. Auto-fixes the obvious ones. Flags completeness gaps. |
-| `/investigate` | **Debugger** | Systematic root-cause debugging. Iron Law: no fixes without investigation. Traces data flow, tests hypotheses, stops after 3 failed fixes. |
-| `/design-review` | **Designer Who Codes** | Same audit as /plan-design-review, then fixes what it finds. Atomic commits, before/after screenshots. |
-| `/qa` | **QA Lead** | Test your app, find bugs, fix them with atomic commits, re-verify. Auto-generates regression tests for every fix. |
-| `/qa-only` | **QA Reporter** | Same methodology as /qa but report only. Use when you want a pure bug report without code changes. |
-| `/ship` | **Release Engineer** | Sync main, run tests, audit coverage, push, open PR. Bootstraps test frameworks if you don't have one. One command. |
-| `/land-and-deploy` | **Release Engineer** | Merge the PR, wait for CI and deploy, verify production health. Takes over after `/ship`. One command from "approved" to "verified in production." |
-| `/canary` | **SRE** | Post-deploy monitoring loop. Watches for console errors, performance regressions, and page failures. Periodic screenshots and anomaly detection. |
-| `/benchmark` | **Performance Engineer** | Baseline page load times, Core Web Vitals, and resource sizes. Compare before/after on every PR. Catch bundle size regressions before they ship. |
-| `/document-release` | **Technical Writer** | Update all project docs to match what you just shipped. Catches stale READMEs automatically. |
-| `/retro` | **Eng Manager** | Team-aware weekly retro. Per-person breakdowns, shipping streaks, test health trends, growth opportunities. |
-| `/browse` | **QA Engineer** | Give the agent eyes. Real Chromium browser, real clicks, real screenshots. ~100ms per command. |
-| `/setup-browser-cookies` | **Session Manager** | Import cookies from your real browser (Chrome, Arc, Brave, Edge) into the headless session. Test authenticated pages. |
+| 技能 | 角色 | 做什么 |
+|------|------|--------|
+| `/office-hours` | **YC Office Hours** | 从这里开始。6 个强制性问题，在你写代码前先重构你的产品定义。会挑战你的表述、前提，并给出实现替代方案。设计文档会继续喂给后续技能。 |
+| `/plan-ceo-review` | **CEO / Founder** | 重新思考问题，找到请求背后隐藏的 10 分产品。四种模式：扩张、选择性扩张、保持范围、缩小范围。 |
+| `/plan-eng-review` | **Eng Manager** | 锁定架构、数据流、图表、边界情况和测试，把隐藏假设全部拉出来。 |
+| `/plan-design-review` | **Senior Designer** | 给每个设计维度打 0 到 10 分，解释什么是 10 分，再把方案改到 10 分。专门抓 AI slop。一次只问一个设计决策。 |
+| `/design-consultation` | **Design Partner** | 从零建立完整的设计系统。了解行业情况，给出安全方案和创意风险，生成接近真实产品的 mockup。设计是所有阶段的核心。 |
+| `/review` | **Staff Engineer** | 找出能过 CI 但会在生产炸掉的问题。会自动修掉明显问题，也会标出完整性缺口。 |
+| `/investigate` | **Debugger** | 系统化做根因分析。铁律：没有调查，就没有修复。跟踪数据流、验证假设，最多尝试 3 次失败修复。 |
+| `/design-review` | **Designer Who Codes** | 和 `/plan-design-review` 一样的审计，然后直接修掉发现的问题。每次修复都要原子提交，并附 before/after 截图。 |
+| `/qa` | **QA Lead** | 测试你的应用，找出 bug，修复它们，生成回归测试，再重新验证。 |
+| `/qa-only` | **QA Reporter** | 和 `/qa` 同样的方法论，但只出报告，不改代码。 |
+| `/ship` | **Release Engineer** | 同步 main，运行测试，审计覆盖率，推送并开 PR。即使你没有测试框架，它也会帮你启动。 |
+| `/land-and-deploy` | **Release Engineer** | 合并 PR，等待 CI 和部署完成，再验证生产环境健康状况。接在 `/ship` 后面使用。 |
+| `/canary` | **SRE** | 部署后持续监控。观察控制台错误、性能回退和页面失败，定期截图并检测异常。 |
+| `/benchmark` | **Performance Engineer** | 建立页面加载时间、Core Web Vitals 和资源大小基线，并在每个 PR 上比较前后差异。 |
+| `/document-release` | **Technical Writer** | 你刚发布什么，它就同步更新什么文档。自动修正过期的 README。 |
+| `/retro` | **Eng Manager** | 面向团队的一周复盘。按人拆分、看发布节奏、看测试健康趋势、看成长空间。 |
+| `/browse` | **QA Engineer** | 给 agent 一双眼睛。真实 Chromium 浏览器、真实点击、真实截图，单步约 100ms。 |
+| `/setup-browser-cookies` | **Session Manager** | 把真实浏览器里的 cookie 导入到无头会话中，用来测试需要登录的页面。 |
 
-### Power tools
+### 强力工具
 
-| Skill | What it does |
-|-------|-------------|
-| `/codex` | **Second Opinion** — independent code review from OpenAI Codex CLI. Three modes: review (pass/fail gate), adversarial challenge, and open consultation. Cross-model analysis when both `/review` and `/codex` have run. |
-| `/careful` | **Safety Guardrails** — warns before destructive commands (rm -rf, DROP TABLE, force-push). Say "be careful" to activate. Override any warning. |
-| `/freeze` | **Edit Lock** — restrict file edits to one directory. Prevents accidental changes outside scope while debugging. |
-| `/guard` | **Full Safety** — `/careful` + `/freeze` in one command. Maximum safety for prod work. |
-| `/unfreeze` | **Unlock** — remove the `/freeze` boundary. |
-| `/setup-deploy` | **Deploy Configurator** — one-time setup for `/land-and-deploy`. Detects your platform, production URL, and deploy commands. |
-| `/gstack-upgrade` | **Self-Updater** — upgrade gstack to latest. Detects global vs vendored install, syncs both, shows what changed. |
+| 技能 | 作用 |
+|------|------|
+| `/codex` | **Second Opinion**。来自 OpenAI Codex CLI 的独立代码审查。三种模式：审查（通过 / 不通过）、对抗式挑战、开放咨询。当 `/review` 和 `/codex` 都跑过时，还能做交叉模型分析。 |
+| `/careful` | **Safety Guardrails**。在执行破坏性命令前报警，例如 rm -rf、DROP TABLE、force-push。说“be careful”就会启用。 |
+| `/freeze` | **Edit Lock**。把文件编辑限制在一个目录里，避免调试时误改别处。 |
+| `/guard` | **Full Safety**。把 `/careful` 和 `/freeze` 合并到一个命令里。 |
+| `/unfreeze` | **Unlock**。移除 `/freeze` 的边界。 |
+| `/setup-deploy` | **Deploy Configurator**。为 `/land-and-deploy` 做一次性配置，自动识别你的平台、生产地址和部署命令。 |
+| `/gstack-upgrade` | **Self-Updater**。升级 gstack 到最新版本，自动识别全局安装和 vendored 安装，并显示变化内容。 |
 
-**[Deep dives with examples and philosophy for every skill →](docs/skills.md)**
+**[每个技能的深度说明、示例和方法论请看这里 →](docs/skills.md)**
 
-## What's new and why it matters
+## 新增内容，以及为什么重要
 
-**`/office-hours` reframes your product before you write code.** You say "daily briefing app." It listens to your actual pain, pushes back on the framing, tells you you're really building a personal chief of staff AI, challenges your premises, and generates three implementation approaches with effort estimates. The design doc it writes feeds directly into `/plan-ceo-review` and `/plan-eng-review` — so every downstream skill starts with real clarity instead of a vague feature request.
+**`/office-hours` 会在你写代码前重构你的产品。** 你说“日程简报应用”，它会先听你的痛点，挑战你的表述，告诉你你真正做的是一个个人首席助理 AI，挑战你的前提，然后给出 3 种实现方案和成本预估。它写出的设计文档会直接喂给 `/plan-ceo-review` 和 `/plan-eng-review`，让后面的所有步骤都建立在清晰的问题定义上，而不是模糊的功能请求上。
 
-**Design is at the heart.** `/design-consultation` doesn't just pick fonts. It researches what's out there in your space, proposes safe choices AND creative risks, generates realistic mockups of your actual product, and writes `DESIGN.md` — and then `/design-review` and `/plan-eng-review` read what you chose. Design decisions flow through the whole system.
+**设计是核心。** `/design-consultation` 不只是挑字体。它会研究你的赛道，给出安全选择和创意风险，生成接近真实产品的 mockup，还会写 `DESIGN.md`。然后 `/design-review` 和 `/plan-eng-review` 会继续读取这些决策，设计就这样贯穿整个系统。
 
-**`/qa` was a massive unlock.** It let me go from 6 to 12 parallel workers. Claude Code saying *"I SEE THE ISSUE"* and then actually fixing it, generating a regression test, and verifying the fix — that changed how I work. The agent has eyes now.
+**`/qa` 是一个巨大突破。** 它让我从 6 个并行 worker 提升到 12 个。Claude Code 能说“我看到了问题”，然后真的修掉它，生成回归测试，再验证修复，这完全改变了我的工作方式。agent 现在真的有眼睛了。
 
-**Smart review routing.** Just like at a well-run startup: CEO doesn't have to look at infra bug fixes, design review isn't needed for backend changes. gstack tracks what reviews are run, figures out what's appropriate, and just does the smart thing. The Review Readiness Dashboard tells you where you stand before you ship.
+**智能路由评审。** 就像一个运转良好的创业公司：CEO 不需要看基础设施 bug 的修复，设计评审也不需要参与后端变更。gstack 会记录跑了哪些评审，判断什么是合适的，然后自动选出正确动作。发布前的 Review Readiness Dashboard 会告诉你当前状态。
 
-**Test everything.** `/ship` bootstraps test frameworks from scratch if your project doesn't have one. Every `/ship` run produces a coverage audit. Every `/qa` bug fix generates a regression test. 100% test coverage is the goal — tests make vibe coding safe instead of yolo coding.
+**把测试做到位。** 如果你的项目还没有测试框架，`/ship` 会从零把它启动起来。每次 `/ship` 都会输出覆盖率审计。每次 `/qa` 修一个 bug 都会生成回归测试。目标是 100% 覆盖率，因为测试能把 vibe coding 变成安全的工程方式，而不是 yolo coding。
 
-**Ship to production in one command.** `/land-and-deploy` picks up where `/ship` left off — merges your PR, waits for CI and deploy, then runs canary verification on your production URL. Auto-detects Fly.io, Render, Vercel, Netlify, Heroku, or GitHub Actions. If something breaks, it offers a revert. Pair with `/canary` for extended post-deploy monitoring and `/benchmark` to catch performance regressions before they ship.
+**一个命令发布到生产。** `/land-and-deploy` 会接过 `/ship` 的结果，合并你的 PR，等待 CI 和部署，然后在你的生产地址上做 canary 验证。它能自动识别 Fly.io、Render、Vercel、Netlify、Heroku 或 GitHub Actions。出问题时，它会提供回滚建议。配合 `/canary` 可以继续做发布后的长期监控，配合 `/benchmark` 可以在性能回退进入生产前把它抓出来。
 
-**`/document-release` is the engineer you never had.** It reads every doc file in your project, cross-references the diff, and updates everything that drifted. README, ARCHITECTURE, CONTRIBUTING, CLAUDE.md, TODOS — all kept current automatically. And now `/ship` auto-invokes it — docs stay current without an extra command.
+**`/document-release` 是你一直缺的那个工程师。** 它会读你项目里的每个文档文件，交叉对照 diff，把所有漂移的内容更新掉。README、ARCHITECTURE、CONTRIBUTING、CLAUDE.md、TODOS 都能自动保持最新。现在 `/ship` 也会自动触发它，所以文档不会再轻易过期。
 
-**Browser handoff when the AI gets stuck.** Hit a CAPTCHA, auth wall, or MFA prompt? `$B handoff` opens a visible Chrome at the exact same page with all your cookies and tabs intact. Solve the problem, tell Claude you're done, `$B resume` picks up right where it left off. The agent even suggests it automatically after 3 consecutive failures.
+**当 agent 卡住时，可以把浏览器交出去。** 遇到验证码、登录墙或 MFA 提示？`$B handoff` 会打开一个可见的 Chrome，停在同一个页面，保留所有 cookie 和标签页。你手动处理完后告诉 Claude，`$B resume` 就会接着跑。连续失败 3 次后，它甚至会自动建议这么做。
 
-**Multi-AI second opinion.** `/codex` gets an independent review from OpenAI's Codex CLI — a completely different AI looking at the same diff. Three modes: code review with a pass/fail gate, adversarial challenge that actively tries to break your code, and open consultation with session continuity. When both `/review` (Claude) and `/codex` (OpenAI) have reviewed the same branch, you get a cross-model analysis showing which findings overlap and which are unique to each.
+**多 AI 第二意见。** `/codex` 会从 OpenAI Codex CLI 拿到一个独立审查结果，等于有一个完全不同的 AI 在看同一个 diff。三种模式：带通过 / 不通过门禁的代码审查、会主动尝试破坏你代码的对抗式挑战、带会话连续性的开放咨询。当 `/review`（Claude）和 `/codex`（OpenAI）都审过同一个分支后，你会拿到一个交叉模型分析，显示哪些发现重叠，哪些只属于某一边。
 
-**Safety guardrails on demand.** Say "be careful" and `/careful` warns before any destructive command — rm -rf, DROP TABLE, force-push, git reset --hard. `/freeze` locks edits to one directory while debugging so Claude can't accidentally "fix" unrelated code. `/guard` activates both. `/investigate` auto-freezes to the module being investigated.
+**按需开启安全护栏。** 说“be careful”，`/careful` 就会在执行破坏性命令前提醒你，比如 rm -rf、DROP TABLE、force-push、git reset --hard。`/freeze` 会把编辑锁在一个目录里，防止 Claude 误修别的模块。`/guard` 会同时开启两者。`/investigate` 会自动把自己限制在正在调查的模块里。
 
-**Proactive skill suggestions.** gstack notices what stage you're in — brainstorming, reviewing, debugging, testing — and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
+**主动推荐合适技能。** gstack 会判断你现在处于哪一阶段，比如头脑风暴、评审、调试还是测试，然后推荐合适的技能。如果你不想再看到建议，直接说“stop suggesting”，它会记住。
 
-## 10-15 parallel sprints
+## 10 到 15 个并行 sprint
 
-gstack is powerful with one sprint. It is transformative with ten running at once.
+单个 sprint 很强。十个同时跑，才是真正的变革。
 
-[Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session running `/office-hours` on a new idea, another doing `/review` on a PR, a third implementing a feature, a fourth running `/qa` on staging, and six more on other branches. All at the same time. I regularly run 10-15 parallel sprints — that's the practical max right now.
+[Conductor](https://conductor.build) 可以同时运行多个 Claude Code 会话，每个都在独立工作区里。一个会话跑新的 `/office-hours`，另一个做 PR 的 `/review`，第三个实现功能，第四个在 staging 上跑 `/qa`，另外六个再跑别的分支。全部同时进行。我通常会同时跑 10 到 15 个 sprint，这基本就是当前的实用上限。
 
-The sprint structure is what makes parallelism work. Without a process, ten agents is ten sources of chaos. With a process — think, plan, build, review, test, ship — each agent knows exactly what to do and when to stop. You manage them the way a CEO manages a team: check in on the decisions that matter, let the rest run.
+sprint 的结构让并行成为可能。没有流程，十个 agent 就是十个混乱源。有了流程，也就是思考、计划、构建、评审、测试、发布，十个 agent 就知道自己该做什么、何时停手。你管理它们的方式，就像 CEO 管理团队一样：盯住关键决策，其余工作交给它们继续跑。
 
 ---
 
-## Come ride the wave
+## 来一起乘上这股浪潮
 
-This is **free, MIT licensed, open source, available now.** No premium tier. No waitlist. No strings.
+这是一套**免费、MIT 许可、开源、现在就能用**的工具。没有高级版，没有等待名单，没有附加条件。
 
-I open sourced how I do development and I am actively upgrading my own software factory here. You can fork it and make it your own. That's the whole point. I want everyone on this journey.
+我已经开源了自己的开发方式，而且还在持续升级自己的软件工厂。你可以 fork 它，改造成你自己的版本。这就是它存在的意义。我想让每个人都能经历这个阶段。
 
-Same tools, different outcome — because gstack gives you structured roles and review gates, not generic agent chaos. That governance is the difference between shipping fast and shipping reckless.
+同样的工具，不同的结果。因为 gstack 给你的是结构化角色和评审门禁，而不是一团 generic 的 agent 混乱。这个治理层，才是“快速但不乱”和“只会乱飞”的分界线。
 
-The models are getting better fast. The people who figure out how to work with them now — really work with them, not just dabble — are going to have a massive advantage. This is that window. Let's go.
+模型进步得非常快。那些现在就学会如何和它们真正协作的人，而不是只是浅尝辄止的人，会拥有巨大的优势。这个窗口期就在这里。上车吧。
 
-Eighteen specialists and seven power tools. All slash commands. All Markdown. All free. **[github.com/garrytan/gstack](https://github.com/garrytan/gstack)** — MIT License
+18 个专家角色，7 个强力工具。全部都是 slash command，全部是 Markdown，全部免费。**[github.com/garrytan/gstack](https://github.com/garrytan/gstack)**，MIT License。
 
-> **We're hiring.** Want to ship 10K+ LOC/day and help harden gstack?
-> Come work at YC — [ycombinator.com/software](https://ycombinator.com/software)
-> Extremely competitive salary and equity. San Francisco, Dogpatch District.
+> **我们在招人。** 想做到每天 1 万行以上 LOC，并帮助把 gstack 打磨得更稳定？
+> 来 YC 工作吧 - [ycombinator.com/software](https://ycombinator.com/software)
+> 薪资和股权都非常有竞争力，地点在旧金山 Dogpatch District。
 
-## Docs
+## 文档
 
-| Doc | What it covers |
-|-----|---------------|
-| [Skill Deep Dives](docs/skills.md) | Philosophy, examples, and workflow for every skill (includes Greptile integration) |
-| [Builder Ethos](ETHOS.md) | Builder philosophy: Boil the Lake, Search Before Building, three layers of knowledge |
-| [Architecture](ARCHITECTURE.md) | Design decisions and system internals |
-| [Browser Reference](BROWSER.md) | Full command reference for `/browse` |
-| [Contributing](CONTRIBUTING.md) | Dev setup, testing, contributor mode, and dev mode |
-| [Changelog](CHANGELOG.md) | What's new in every version |
+| 文档 | 内容 |
+|------|------|
+| [技能深度说明](docs/skills.md) | 每个技能的方法论、示例和工作流，包括 Greptile 集成 |
+| [Builder Ethos](ETHOS.md) | 构建者哲学：Boil the Lake、Search Before Building、三层知识结构 |
+| [架构](ARCHITECTURE.md) | 设计决策和系统内部结构 |
+| [浏览器参考](BROWSER.md) | `/browse` 的完整命令参考 |
+| [贡献指南](CONTRIBUTING.md) | 开发环境、测试、contributor 模式和 dev 模式 |
+| [更新日志](CHANGELOG.md) | 每个版本的新内容 |
 
-## Privacy & Telemetry
+## 隐私与遥测
 
-gstack includes **opt-in** usage telemetry to help improve the project. Here's exactly what happens:
+gstack 含有**默认关闭、可选择开启**的使用遥测，用来帮助改进项目。具体如下：
 
-- **Default is off.** Nothing is sent anywhere unless you explicitly say yes.
-- **On first run,** gstack asks if you want to share anonymous usage data. You can say no.
-- **What's sent (if you opt in):** skill name, duration, success/fail, gstack version, OS. That's it.
-- **What's never sent:** code, file paths, repo names, branch names, prompts, or any user-generated content.
-- **Change anytime:** `gstack-config set telemetry off` disables everything instantly.
+- **默认关闭。** 除非你明确同意，否则不会发送任何数据。
+- **首次运行时**，gstack 会询问你是否愿意共享匿名使用数据。你可以直接拒绝。
+- **如果你开启，发送的内容只有：** 技能名、持续时间、成功 / 失败、gstack 版本、操作系统。仅此而已。
+- **绝不会发送：** 代码、文件路径、仓库名、分支名、提示词或任何用户生成内容。
+- **随时可改：** 执行 `gstack-config set telemetry off` 可以立刻关闭全部遥测。
 
-Data is stored in [Supabase](https://supabase.com) (open source Firebase alternative). The schema is in [`supabase/migrations/001_telemetry.sql`](supabase/migrations/001_telemetry.sql) — you can verify exactly what's collected. The Supabase publishable key in the repo is a public key (like a Firebase API key) — row-level security policies restrict it to insert-only access.
+数据存储在 [Supabase](https://supabase.com) 中，这是一个开源的 Firebase 替代品。Schema 在 [`supabase/migrations/001_telemetry.sql`](supabase/migrations/001_telemetry.sql) 里，你可以直接核查到底收集了什么。仓库里的 Supabase publishable key 是公开 key，类似 Firebase API key，真正起作用的是行级安全策略，它只允许插入。
 
-**Local analytics are always available.** Run `gstack-analytics` to see your personal usage dashboard from the local JSONL file — no remote data needed.
+**本地分析始终可用。** 运行 `gstack-analytics` 就能从本地 JSONL 文件查看个人使用数据，不需要任何远端数据。
 
-## Troubleshooting
+## 故障排查
 
-**Skill not showing up?** `cd ~/.claude/skills/gstack && ./setup`
+**技能没有出现？** `cd ~/.claude/skills/gstack && ./setup`
 
-**`/browse` fails?** `cd ~/.claude/skills/gstack && bun install && bun run build`
+**`/browse` 失败？** `cd ~/.claude/skills/gstack && bun install && bun run build`
 
-**Stale install?** Run `/gstack-upgrade` — or set `auto_upgrade: true` in `~/.gstack/config.yaml`
+**安装过旧？** 运行 `/gstack-upgrade`，或者在 `~/.gstack/config.yaml` 里设置 `auto_upgrade: true`
 
-**Windows users:** gstack works on Windows 11 via Git Bash or WSL. Node.js is required in addition to Bun — Bun has a known bug with Playwright's pipe transport on Windows ([bun#4253](https://github.com/oven-sh/bun/issues/4253)). The browse server automatically falls back to Node.js. Make sure both `bun` and `node` are on your PATH.
+**Windows 用户：** gstack 可通过 Git Bash 或 WSL 在 Windows 11 上使用。除 Bun 之外还需要 Node.js，因为 Bun 在 Windows 上和 Playwright 的 pipe transport 有已知问题（[bun#4253](https://github.com/oven-sh/bun/issues/4253)）。browse server 会自动回退到 Node.js。请确认 `bun` 和 `node` 都在 PATH 中。
 
-**Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a gstack section. Add this:
+**Claude 说它看不到技能？** 确认你项目里的 `CLAUDE.md` 有 gstack 段落。可以添加下面这段：
 
 ```
 ## gstack
-Use /browse from gstack for all web browsing. Never use mcp__claude-in-chrome__* tools.
-Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
+使用 gstack 的 /browse 进行所有网页浏览。不要使用 mcp__claude-in-chrome__* 工具。
+可用技能：/office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
 /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review,
 /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful,
 /freeze, /guard, /unfreeze, /gstack-upgrade.
 ```
 
-## License
+## 许可
 
-MIT. Free forever. Go build something.
+MIT。永久免费。去做点有意思的东西吧。
