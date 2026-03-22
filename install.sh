@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GSTACK_REPO_URL="${GSTACK_REPO_URL:-https://github.com/garrytan/gstack.git}"
+GSTACK_REPO_URL="${GSTACK_REPO_URL:-https://github.com/XiaYiHann/gstack-cn.git}"
 GSTACK_INSTALL_REF="${GSTACK_INSTALL_REF:-main}"
 
 find_local_repo_root() {

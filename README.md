@@ -48,7 +48,7 @@ Fork 它，改进它，把它变成你自己的。别只会挑刺，先欣赏再
 
 打开 Claude Code，粘贴下面这段。剩下的 Claude 会处理。
 
-> 安装 gstack：运行 **`curl -fsSL https://raw.githubusercontent.com/garrytan/gstack/main/install.sh | bash`**
+> 安装 gstack：运行 **`curl -fsSL https://raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh | bash`**
 
 再次运行同一个命令，就会更新现有安装。
 
@@ -197,7 +197,7 @@ sprint 的结构让并行成为可能。没有流程，十个 agent 就是十个
 
 模型进步得非常快。那些现在就学会如何和它们真正协作的人，而不是只是浅尝辄止的人，会拥有巨大的优势。这个窗口期就在这里。上车吧。
 
-18 个专家角色，7 个强力工具。全部都是 slash command，全部是 Markdown，全部免费。**[github.com/garrytan/gstack](https://github.com/garrytan/gstack)**，MIT License。
+18 个专家角色，7 个强力工具。全部都是 slash command，全部是 Markdown，全部免费。**[github.com/XiaYiHann/gstack-cn](https://github.com/XiaYiHann/gstack-cn)**，MIT License。
 
 > **我们在招人。** 想做到每天 1 万行以上 LOC，并帮助把 gstack 打磨得更稳定？
 > 来 YC 工作吧 - [ycombinator.com/software](https://ycombinator.com/software)

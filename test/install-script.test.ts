@@ -40,6 +40,7 @@ describe('install.sh', () => {
 
     const content = fs.readFileSync(INSTALL_SCRIPT, 'utf-8');
     expect(content).toContain('copy_skill_tree');
+    expect(content).toContain('github.com/XiaYiHann/gstack-cn.git');
     expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.claude/skills/gstack"');
     expect(content).toContain('copy_skill_tree "$SOURCE_ROOT" "$HOME/.agent/skills/gstack"');
     expect(content).toContain('inject_chinese_directive "$HOME/.claude/CLAUDE.md"');
@@ -49,6 +50,7 @@ describe('install.sh', () => {
   test('README documents the install.sh entry points', () => {
     const content = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf-8');
     expect(content).toContain('install.sh | bash');
+    expect(content).toContain('raw.githubusercontent.com/XiaYiHann/gstack-cn/main/install.sh');
     expect(content).toContain('./install.sh');
   });
 
