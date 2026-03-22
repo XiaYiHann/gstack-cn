@@ -146,7 +146,7 @@ link_claude_skill_dirs() {
       target="$skills_dir/$skill_name"
       # Create or update symlink; skip if a real file/directory exists
       if [ -L "$target" ] || [ ! -e "$target" ]; then
-        ln -snf "gstack/$skill_name" "$target"
+        ln -snf "$(basename "$GSTACK_DIR")/$skill_name" "$target"
         linked+=("$skill_name")
       fi
     fi
@@ -267,3 +267,20 @@ if [ ! -d "$HOME/.gstack" ]; then
   echo "  Welcome! Run /gstack-upgrade anytime to stay current."
 fi
 rm -f /tmp/gstack-latest-version
+
+# 8. Inject Chinese output directive into user's global CLAUDE.md
+inject_chinese_directive() {
+  local user_claude="$HOME/.claude/CLAUDE.md"
+  local marker="# gstack-cn: Chinese output"
+
+  if [ -f "$user_claude" ] && ! grep -q "$marker" "$user_claude" 2>/dev/null; then
+    cat >> "$user_claude" << 'DIRECTIVE'
+
+## gstack-cn: Chinese output
+When using gstack skills, always respond in Chinese. Generate plans, docs, and
+all user-facing output in Chinese unless explicitly requested otherwise.
+DIRECTIVE
+    echo "  injected Chinese output directive into $user_claude"
+  fi
+}
+inject_chinese_directive
