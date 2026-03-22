@@ -23,6 +23,22 @@ const ALL_SKILLS = (() => {
 })();
 
 describe('gen-skill-docs', () => {
+  test('root skill description fits Codex 1024-char limit', () => {
+    const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
+    const fmEnd = content.indexOf('\n---', 4);
+    expect(fmEnd).toBeGreaterThan(0);
+    const frontmatter = content.slice(4, fmEnd);
+    const descriptionMatch = frontmatter.match(/description:\s*\|\n([\s\S]*?)(?:\n[a-zA-Z-]+:|\s*$)/);
+    expect(descriptionMatch).not.toBeNull();
+    const description = descriptionMatch![1]
+      .split('\n')
+      .map(line => line.replace(/^  /, ''))
+      .join('\n')
+      .trim();
+
+    expect(description.length).toBeLessThanOrEqual(1024);
+  });
+
   test('generated SKILL.md contains all command categories', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
     const categories = new Set(Object.values(COMMAND_DESCRIPTIONS).map(d => d.category));
@@ -587,6 +603,22 @@ describe('Codex generation (--host codex)', () => {
       expect(frontmatter).not.toContain('version:');
       expect(frontmatter).not.toContain('hooks:');
     }
+  });
+
+  test('Codex entry skill description fits 1024-char limit', () => {
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack', 'SKILL.md'), 'utf-8');
+    const fmEnd = content.indexOf('\n---', 4);
+    expect(fmEnd).toBeGreaterThan(0);
+    const frontmatter = content.slice(4, fmEnd);
+    const descriptionMatch = frontmatter.match(/description:\s*\|\n([\s\S]*)/);
+    expect(descriptionMatch).not.toBeNull();
+    const description = descriptionMatch![1]
+      .split('\n')
+      .map(line => line.replace(/^  /, ''))
+      .join('\n')
+      .trim();
+
+    expect(description.length).toBeLessThanOrEqual(1024);
   });
 
   test('no .claude/skills/ in Codex output', () => {
